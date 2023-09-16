@@ -7,6 +7,8 @@ import torch
 import torch.nn.functional as F
 import matplotlib.pyplot as plt
 import rl_utils
+import cv2
+import imageio
 
 class ReplayBuffer:
     ''' 经验回放池 '''
@@ -42,7 +44,7 @@ class DQN:
         self.action_dim = action_dim
         self.q_net = Qnet(state_dim, hidden_dim,
                           self.action_dim).to(device)  # Q网络
-        # 目标网络
+        # 目标网络 
         self.target_q_net = Qnet(state_dim, hidden_dim,
                                  self.action_dim).to(device)
         # 使用Adam优化器
@@ -55,6 +57,7 @@ class DQN:
         self.device = device
 
     def take_action(self, state):  # epsilon-贪婪策略采取动作
+        # if np.random.random() < self.epsilon * np.exp(-self.count/100):
         if np.random.random() < self.epsilon:
             action = np.random.randint(self.action_dim)
         else:
@@ -65,8 +68,7 @@ class DQN:
     def update(self, transition_dict):
         states = torch.tensor(transition_dict['states'],
                               dtype=torch.float).to(self.device)
-        actions = torch.tensor(transition_dict['actions']).view(-1, 1).to(
-            self.device)
+        actions = torch.tensor(transition_dict['actions']).view(-1, 1).to(self.device)
         rewards = torch.tensor(transition_dict['rewards'],
                                dtype=torch.float).view(-1, 1).to(self.device)
         next_states = torch.tensor(transition_dict['next_states'],
@@ -102,7 +104,7 @@ batch_size = 64
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 env_name = 'CartPole-v1'
-env = gym.make(env_name)
+env = gym.make(env_name, render_mode="rgb_array")
 random.seed(0)
 np.random.seed(0)
 # env.seed(0)
@@ -114,11 +116,18 @@ agent = DQN(state_dim, hidden_dim, action_dim, lr, gamma, epsilon,
             target_update, device)
 
 return_list = []
+allimage = []
 for i in range(10):
     with tqdm(total=int(num_episodes / 10), desc='Iteration %d' % i) as pbar:
         for i_episode in range(int(num_episodes / 10)):
             episode_return = 0
             state = env.reset()
+            
+            img = env.render()
+            allimage.append(img)
+            # cv2.imshow("CartPole-v1", img)
+            # cv2.waitKey(-1)
+            
             if len(state)!=2*2:
                 state = state[0]
             done = False
@@ -149,6 +158,8 @@ for i in range(10):
                     '%.3f' % np.mean(return_list[-10:])
                 })
             pbar.update(1)
+
+imageio.mimsave(r'C:\Users\10696\Desktop\access\Hands-on-RL\chapter7.gif', allimage, duration=10)
 
 episodes_list = list(range(len(return_list)))
 plt.plot(episodes_list, return_list)
