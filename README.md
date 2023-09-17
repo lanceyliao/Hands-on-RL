@@ -4,9 +4,27 @@
 
 <img src="./chapter7.gif" width="90%"/>
 
-## blogs
+### blogs
 
 [https://zhuanlan.zhihu.com/p/656515516 动手学强化学习reinforcement learning-chapter-seven-DQN algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/656515516)
+
+### Numpy complementation of Chapter 7 DQN Algorithm
+**difference**: `self.epsilon = self.epsilon * 0.996 if self.epsilon > 0.0001 else 0.0001`, `network with numpy` and so on.
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter7_DQN.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter7_DQN.gif" width="90%"/>
+
+## Chapter 8 DQN改进以后的算法
+
+
+-------------------------------------original readme---------------------------------
+
+-------------------------------------original readme---------------------------------
+
+-------------------------------------original readme---------------------------------
 
 Tips: 若运行gym环境的代码时遇到报错，请尝试pip install gym==0.18.3安装此版本的gym库，若仍有问题，欢迎提交issue！
 

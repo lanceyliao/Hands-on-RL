@@ -104,7 +104,7 @@ def train_single():
         sum = np.sum((outputs - out) * (outputs - out))
         delta = 2*(out - outputs)
         partial = fc.backward(delta)
-        fc.update(0.00001)
+        fc.update(0.0001)
         fc.setzero()
         print(sum)
 
@@ -117,9 +117,9 @@ class DQN:
                  epsilon, target_update):
         self.action_dim = action_dim  ##  动作的dim
         ## 实例化智能体的大脑
-        self.q_net = Qnet(state_dim, hidden_dim, self.action_dim)  # Q网络
+        self.q_net = Qnet(state_dim, hidden_dim, self.action_dim, adam=False)  # Q网络
         # 目标网络
-        self.target_q_net = Qnet(state_dim, hidden_dim, self.action_dim)
+        self.target_q_net = Qnet(state_dim, hidden_dim, self.action_dim, adam=False)
         self.gamma = gamma  # 折扣因子
         self.epsilon = epsilon  # epsilon-贪婪策略
         self.target_update = target_update  # 目标网络更新频率
@@ -127,14 +127,13 @@ class DQN:
         self.learning_rate = learning_rate
 
     def take_action(self, state):  # epsilon-贪婪策略采取动作
-        # if np.random.random() < self.epsilon * np.exp(-self.count/100):
-        # if np.random.random() < self.epsilon * 0.996 if self.epsilon > 0.0001 else 0.0001:
         if np.random.random() < self.epsilon:
             action = np.random.randint(self.action_dim) ## 随机选择一个动作
         else:
             state = np.array([state])                   ## 状态
             ret = self.q_net.forward(state)
             action = np.argmax(ret)              ## 智能体的大脑，根据状态拿到动作价值，q_net返回值是每个动作的动作价值，然后拿到动作的
+        self.epsilon = self.epsilon * 0.996 if self.epsilon > 0.0001 else 0.0001
         return action
 
     ## 使用历史数据来训练智能体的大脑，两个大脑的，一个实时update做label，另一个延迟update做predict
@@ -189,62 +188,69 @@ class DQN:
             self.target_q_net.setparam(self.q_net) ## update目标网络
         self.count += 1
 
-lr = 2e-3
+lr = 0.02
 num_episodes = 500
 hidden_dim = 300
 gamma = 0.98
 epsilon = 0.01
 target_update = 10
-buffer_size = 10000
+buffer_size = 100000
 minimal_size = 500
 batch_size = 64
 
 env_name = 'CartPole-v1'
 env = gym.make(env_name, render_mode="rgb_array")
-# random.seed(0)
-# np.random.seed(0)
-# env.seed(0)
+random.seed(0)
+np.random.seed(0)
+gym.utils.seeding.np_random(0)
 replay_buffer = ReplayBuffer(buffer_size)
 state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.n
-agent = DQN(state_dim, hidden_dim, action_dim, lr, gamma, epsilon,
-            target_update)
+agent = DQN(state_dim, hidden_dim, action_dim, lr, gamma, epsilon, target_update)
 
 return_list = []
 allimage = []
-for i in range(10):
+epoch = 10
+saved = False
+for i in range(epoch):
+    ## 训练的次数是
     with tqdm(total=int(num_episodes / 10), desc='Iteration %d' % i) as pbar:
         for i_episode in range(int(num_episodes / 10)):
-            episode_return = 0
-            state = env.reset()
+            episode_return = 0   ## 累积的奖励
+            state = env.reset()  ## 环境随机重置的
             
             if len(state)!=2*2:
                 state = state[0]
             done = False
+            # https://huggingface.co/learn/deep-rl-course/unit4/hands-on#create-a-virtual-display
             while not done:
-                if (i_episode + 1) % 10 == 0 and i < 6:
+                if (i_episode + 1) % 10 == 0 and i == epoch - 1: # np.mean(return_list[-6:]) > 600 - 101:
                     img = env.render()
                     allimage.append(img)
+                    saved = True
                 # cv2.imshow("CartPole-v1", img)
                 # cv2.waitKey(-1)
                 
-                action = agent.take_action(state)
-                next_state, reward, terminated, truncated, info = env.step(action)
-                done = terminated | truncated
+                action = agent.take_action(state) ## 拿到动作价值最大的动作，取值可选值是：0 或者 1
+                ## 环境根据动作，前进一步的，拿到下一个状态，奖励，是否终止，是否步长太长，info
+                next_state, reward, terminated, truncated, info = env.step(action)  
+                done = terminated | truncated  ## 终止或者步长太长，都会导致已经结束
+                ## 将状态、动作、奖励、下一个状态、是否结束，加入到缓冲池，也就是历史内，用来训练大脑网络的
                 replay_buffer.add(state, action, reward, next_state, done)
-                state = next_state
-                episode_return += reward
+                state = next_state   ## 下一个状态赋值到当前状态
+                episode_return += reward  ##累加奖励的
                 # 当buffer数据的数量超过一定值后,才进行Q网络训练
-                if replay_buffer.size() > minimal_size:
+                if replay_buffer.size() > minimal_size:         ## 不停的和环境交互，直到缓冲池内的历史数据大于一定的数量，再开始训练网络的
+                    ## 从缓冲池采样历史数据，用来训练大脑网络的
                     b_s, b_a, b_r, b_ns, b_d = replay_buffer.sample(batch_size)
-                    transition_dict = {
+                    transition_dict = {      ##  拿到的历史数据
                         'states': b_s,
                         'actions': b_a,
                         'next_states': b_ns,
                         'rewards': b_r,
                         'dones': b_d
                     }
-                    agent.update(transition_dict)
+                    agent.update(transition_dict)  ## 训练大脑网络 q_net
             return_list.append(episode_return)
             if (i_episode + 1) % 10 == 0:
                 pbar.set_postfix({
@@ -254,9 +260,11 @@ for i in range(10):
                     '%.3f' % np.mean(return_list[-10:])
                 })
             pbar.update(1)
+    if saved:
+        break
 
 #https://github.com/guicalare/Img2gif/blob/master/Code/Img2Gif.py
-imageio.mimsave(r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning\chapter7_DQN.gif', allimage, duration=20)
+imageio.mimsave(r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning\chapter7_DQN.gif', allimage, duration=10)
 
 episodes_list = list(range(len(return_list)))
 plt.plot(episodes_list, return_list)

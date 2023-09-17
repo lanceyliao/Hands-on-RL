@@ -87,7 +87,8 @@ class DQN:
 
         ## target, 因该网络实时update，所以可以看作是真实值，也就是监督学习内的label，而目标网络延迟很多，目标网络的输出可以看作predict
         ## “真实”label，q_net输入当前的状态，返回值是当前状态下每个动作的动作价值，所以gather以后拿到的是：当前(状态和动作)对应的动作价值
-        q_values = self.q_net(states).gather(1, actions)  # Q值
+        output = self.q_net(states)
+        q_values = output.gather(1, actions)  # Q值
         # 下个状态的最大Q值，延迟网络的输出
         ## 可以看作是predict，输入是下一个状态，返回值是下一个状态所有动作的动作价值内的最大值
         ## 用来算当前(状态和动作)下的动作价值
@@ -96,9 +97,20 @@ class DQN:
         q_targets = rewards + self.gamma * max_next_q_values * (1 - dones)  # TD误差目标
         ## q_net的truth label 和 target_q_net的predict，算损失用来反向传播
         ## 也就是两个网络算出来的（状态和动作）对应的动作价值，用MSE来算损失函数的呢
+        ki = 2 * (q_values - q_targets) / torch.numel(q_values)
         dqn_loss = torch.mean(F.mse_loss(q_values, q_targets))  # 均方误差损失函数
+        q_values.retain_grad()
+        dqn_loss.retain_grad()
+        output.retain_grad()
         self.optimizer.zero_grad()  # PyTorch中默认梯度会累积,这里需要显式将梯度置为0
         dqn_loss.backward()   ##  反向传播求出梯度
+        kk = self.optimizer.param_groups
+        k = q_values.grad
+        kkk = dqn_loss.grad
+        jj = output.grad
+        nj = torch.tensor([-1,0,1])
+        nm = nj.neg()
+        nk = nj.conj()
         self.optimizer.step() ##  使用累加的梯度来update参数
 
         if self.count % self.target_update == 0:    ##  达到了给定的步长，复制最newest的参数给target_q_net网络，q_net是label，target_q_net是predict
@@ -120,7 +132,7 @@ env_name = 'CartPole-v1'
 env = gym.make(env_name, render_mode="rgb_array")
 random.seed(0)
 np.random.seed(0)
-# env.seed(0)
+gym.utils.seeding.np_random(0)
 torch.manual_seed(0)
 replay_buffer = ReplayBuffer(buffer_size)
 state_dim = env.observation_space.shape[0]
@@ -140,8 +152,9 @@ for i in range(10):
             if len(state)!=2*2:
                 state = state[0]
             done = False
+            # https://huggingface.co/learn/deep-rl-course/unit4/hands-on#create-a-virtual-display
             while not done:
-                if (i_episode + 1) % 10 == 0 and i in [2,9]:
+                if (i_episode + 1) % 10 == 0 and i in [9]:
                     img = env.render()
                     allimage.append(img)
                 # cv2.imshow("CartPole-v1", img)
@@ -177,28 +190,7 @@ for i in range(10):
                 })
             pbar.update(1)
 
-# Iteration 0: 100%|██████████| 50/50 [00:00<00:00, 764.86it/s, episode=50,
-# return=9.300]
-# Iteration 1: 100%|██████████| 50/50 [00:04<00:00, 10.66it/s, episode=100,
-# return=12.300]
-# Iteration 2: 100%|██████████| 50/50 [00:24<00:00,  2.05it/s, episode=150,
-# return=123.000]
-# Iteration 3: 100%|██████████| 50/50 [01:25<00:00,  1.71s/it, episode=200,
-# return=153.600]
-# Iteration 4: 100%|██████████| 50/50 [01:30<00:00,  1.80s/it, episode=250,
-# return=180.500]
-# Iteration 5: 100%|██████████| 50/50 [01:24<00:00,  1.68s/it, episode=300,
-# return=185.000]
-# Iteration 6: 100%|██████████| 50/50 [01:32<00:00,  1.85s/it, episode=350,
-# return=193.900]
-# Iteration 7: 100%|██████████| 50/50 [01:31<00:00,  1.84s/it, episode=400,
-# return=196.600]
-# Iteration 8: 100%|██████████| 50/50 [01:33<00:00,  1.88s/it, episode=450,
-# return=193.800]
-# Iteration 9: 100%|██████████| 50/50 [01:34<00:00,  1.88s/it, episode=500,
-# return=200.000]
-
-#https://github.com/guicalare/Img2gif/blob/master/Code/Img2Gif.py
+# https://github.com/guicalare/Img2gif/blob/master/Code/Img2Gif.py
 imageio.mimsave(r'C:\Users\10696\Desktop\access\Hands-on-RL\chapter7.gif', allimage, duration=10)
 
 episodes_list = list(range(len(return_list)))

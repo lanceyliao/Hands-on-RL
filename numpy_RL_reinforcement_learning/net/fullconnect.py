@@ -50,14 +50,15 @@ class fclayer(object):
         self.params_delta = np.zeros((infeature, outfeature))
         self.bias_delta = np.zeros(outfeature)
         self.adam = adam
-        self.beta1 = 0.9
-        self.beta2 = 0.999
-        self.epsadam = 10**(2-10)
-        self.moment_p = np.zeros_like(self.params)
-        self.rmsprop_p = np.zeros_like(self.params)
-        if bias:
-            self.moment_b = np.zeros_like(self.bias_params)
-            self.rmsprop_b = np.zeros_like(self.bias_params)
+        if adam:
+            self.beta1 = 0.9
+            self.beta2 = 0.999
+            self.epsadam = 10**(2-10)
+            self.moment_p = np.zeros_like(self.params)
+            self.rmsprop_p = np.zeros_like(self.params)
+            if bias:
+                self.moment_b = np.zeros_like(self.bias_params)
+                self.rmsprop_b = np.zeros_like(self.bias_params)
         self.t = 1
         
     def forward(self, inputs):
@@ -94,13 +95,13 @@ class fclayer(object):
         # self.bias_delta = np.clip(self.bias_delta, -6, 6)
         if self.adam:
             self.moment_p = self.beta1 * self.moment_p + (1 - self.beta1) * self.params_delta
-            self.rmsprop_p = self.beta2 * self.rmsprop_p + (1 - self.beta2) * self.params_delta**2
+            self.rmsprop_p = self.beta2 * self.rmsprop_p + (1 - self.beta2) * (self.params_delta**2)
             self.moment_p = self.moment_p / (1 - self.beta1**self.t)
             self.rmsprop_p = self.rmsprop_p / (1 - self.beta2**self.t)
             self.params -= (self.moment_p * lr / (np.sqrt(self.rmsprop_p)+ self.epsadam))
             if self.bias:
                 self.moment_b = self.beta1 * self.moment_b + (1 - self.beta1) * self.bias_delta
-                self.rmsprop_b = self.beta2 * self.rmsprop_b + (1 - self.beta2) * self.bias_delta**2
+                self.rmsprop_b = self.beta2 * self.rmsprop_b + (1 - self.beta2) * (self.bias_delta**2)
                 self.moment_b = self.moment_b / (1 - self.beta1**self.t)
                 self.rmsprop_b = self.rmsprop_b / (1 - self.beta2**self.t)
                 self.bias_params -= (self.moment_b * lr / (np.sqrt(self.rmsprop_b)+ self.epsadam))
@@ -133,8 +134,8 @@ def train_single():
     else:
         bias_params = []
     
-    fc = fclayer(infeature, outfeature, bias, params, bias_params, adam=False)
-    for i in range(10000):
+    fc = fclayer(infeature, outfeature, bias, params, bias_params, adam = True)
+    for i in range(1000):
         out = fc.forward(inputs)
         sum = np.sum((outputs - out) * (outputs - out))
         delta = 2*(out - outputs)
