@@ -8,7 +8,7 @@
 
 [https://zhuanlan.zhihu.com/p/656515516 动手学强化学习reinforcement learning-chapter-seven-DQN algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/656515516)
 
-### Numpy complementation of Chapter 7 DQN Algorithm
+### Numpy implementation of Chapter 7 DQN Algorithm
 **difference**: `self.epsilon = self.epsilon * 0.996 if self.epsilon > 0.0001 else 0.0001`, `network with numpy` and so on.
 
 **run**
