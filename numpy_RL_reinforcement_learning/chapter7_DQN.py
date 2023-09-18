@@ -200,6 +200,7 @@ batch_size = 64
 
 env_name = 'CartPole-v1'
 env = gym.make(env_name, render_mode="rgb_array")
+_ = env.reset(seed=0)
 random.seed(0)
 np.random.seed(0)
 gym.utils.seeding.np_random(0)

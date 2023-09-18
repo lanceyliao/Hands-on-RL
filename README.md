@@ -1,5 +1,7 @@
 # 动手学强化学习
 
+gymnasium==0.29.1
+
 ## Chapter 7 DQN Algorithm
 
 <img src="./chapter7.gif" width="90%"/>
@@ -19,6 +21,19 @@ python ./numpy_RL_reinforcement_learning/chapter7_DQN.py
 
 ## Chapter 8 DQN改进以后的算法
 
+<img src="./chapter8_0.gif" width="33%"/><img src="./chapter8_1.gif" width="33%"/><img src="./chapter8_2.gif" width="33%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/656614302 动手学强化学习reinforcement learning-chapter-eight-DQN改进 algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/656614302)
+
+### Numpy implementation of Chapter 8 DQN improvement Algorithm
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter8_DQN_improve.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter8_0.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_1.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_2.gif" width="33%"/>
 
 -------------------------------------original readme---------------------------------
 
