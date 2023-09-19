@@ -31,10 +31,27 @@ python ./numpy_RL_reinforcement_learning/chapter7_DQN.py
 
 **run**
 ```
-python ./numpy_RL_reinforcement_learning/chapter8_DQN_improve.py
+python ./numpy_RL_reinforcement_learning/chapter9.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter8_0.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_1.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_2.gif" width="33%"/>
 
+
+## Chapter 9 策略梯度算法
+
+<img src="./chapter9.gif" width="90%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/656835865 动手学强化学习reinforcement learning-chapter-nine-策略梯度算法，阅读的笔记](https://zhuanlan.zhihu.com/p/656835865)
+
+### Numpy implementation of Chapter 9 策略梯度算法
+**difference**: `self.epsilon = self.epsilon * 0.996 if self.epsilon > 0.0001 else 0.0001`, `network with numpy` and so on.
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter9_策略梯度算法.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter9.gif" width="90%"/>
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
