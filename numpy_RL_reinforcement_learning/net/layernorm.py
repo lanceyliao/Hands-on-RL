@@ -1,6 +1,6 @@
 # https://zhuanlan.zhihu.com/p/642043155
 import numpy as np
-import torch 
+import torch
 from torch import nn
 from copy import deepcopy
 
