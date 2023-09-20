@@ -16,6 +16,7 @@ gymnasium==0.29.1
 **run**
 ```
 python ./numpy_RL_reinforcement_learning/chapter7_DQN.py
+python ./chapter7.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter7_DQN.gif" width="90%"/>
 
@@ -31,7 +32,8 @@ python ./numpy_RL_reinforcement_learning/chapter7_DQN.py
 
 **run**
 ```
-python ./numpy_RL_reinforcement_learning/chapter9.py
+python ./numpy_RL_reinforcement_learning/chapter8.py
+python ./chapter8.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter8_0.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_1.gif" width="33%"/><img src="./numpy_RL_reinforcement_learning/chapter8_2.gif" width="33%"/>
 
@@ -50,8 +52,28 @@ python ./numpy_RL_reinforcement_learning/chapter9.py
 **run**
 ```
 python ./numpy_RL_reinforcement_learning/chapter9_策略梯度算法.py
+python ./chapter9.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter9.gif" width="90%"/>
+
+
+## Chapter 10 Actor-Critic 算法
+
+<img src="./chapter10.gif" width="90%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/657087227 动手学强化学习reinforcement learning-chapter-ten-Actor-Critic algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/657087227)
+
+### Numpy implementation of Chapter 10 Actor-Critic 算法
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter10_Actor-Critic算法.py
+python ./chapter10.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter10.gif" width="90%"/>
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
