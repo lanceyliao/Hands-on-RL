@@ -70,6 +70,12 @@ def mean_square_loss(predict:np.ndarray, label:np.ndarray):
     partial = 2 * (predict - label) / predict.size
     return loss, partial
 
+def mean_square_two_derive_loss(predict:np.ndarray, label:np.ndarray):
+    loss = np.sum(np.square(predict - label)) / predict.size
+    partial0 = 2 * (predict - label) / predict.size
+    partial1 = 2 * (label - predict) / label.size
+    return loss, partial0, partial1
+
 if __name__=="__main__":
     predict = np.random.rand(3, 20)
     label = np.zeros((3, 20))

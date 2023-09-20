@@ -3,6 +3,8 @@ from copy import deepcopy
 import torch
 import math
 from scipy.special import erf
+from multiprocessing.pool import ThreadPool
+from multiprocessing import cpu_count
 
 class ReLU(object):
 
@@ -47,23 +49,50 @@ class Softmax(object):
         except Exception as e:
             k = 0
         return self.out
+    
+    def dealwith(self, args):
+        ou, rowd = args
+        kk = ou.reshape((-1, 1))
+        kkk = np.diagflat(kk) - np.dot(kk, kk.T)
+        k = np.dot(rowd, kkk)
+        return k[0]
 
     def backward(self, delta, out):
         # https://zhuanlan.zhihu.com/p/657177292
         if len(out.shape)!=2 or self.axis not in [1, -1]:
             exit(-1)
         shape0, shape1 = out.shape
-        d = np.zeros((shape0, shape1))
+        d = np.zeros((shape0, shape1), dtype=np.float64)
+        NUM_THREADS = min(10, cpu_count()-1)
+        ou = []
+        rowd = []
         for i in range(shape0):
-            kk = out[i].reshape((-1, 1))
-            '''
-                k0 = np.diagflat(kk)     ## 将对角线填充完整，也就是 out填充了对角线, 其他都是0的 
-                k1 = np.dot(kk, kk.T)    ## nx1 dot 1xn = nxn, 也就是 element 的 multiply
-            '''
-            kkk = np.diagflat(kk) - np.dot(kk, kk.T)
+            kk = out[i]
             row_delta = np.array([delta[i, :]])
-            k = np.dot(row_delta, kkk)
-            d[i, :] += k[0]
+            ou.append(kk)
+            rowd.append(row_delta)
+        # https://github.com/ultralytics/ultralytics/blob/main/ultralytics/data/dataset.py#L60
+        with ThreadPool(NUM_THREADS) as pool:
+            results = pool.imap(func=self.dealwith,
+                                iterable=zip(ou, rowd))
+            for i, k in enumerate(results):
+                d[i, :] += k
+
+        # dd = np.zeros((shape0, shape1), dtype=np.float64)
+        # for i in range(shape0):
+        #     kk = out[i].reshape((-1, 1)).astype(np.float64)
+        #     '''
+        #         k0 = np.diagflat(kk)     ## 将对角线填充完整，也就是 out填充了对角线, 其他都是0的 
+        #         k1 = np.dot(kk, kk.T)    ## nx1 dot 1xn = nxn, 也就是 element 的 multiply
+        #     '''
+        #     kkk = np.diagflat(kk) - np.dot(kk, kk.T)
+        #     row_delta = np.array([delta[i, :]])
+        #     k = np.dot(row_delta, kkk)
+        #     dd[i, :] += k[0]
+        # d = dd
+        # k = d==dd
+        # kk = k.all()
+        
         return d
 
     def setzero(self):
@@ -95,18 +124,22 @@ if __name__=="__main__":
     # ReLU()
     soft = torch.nn.Softmax(dim = 1)
     inputs = torch.tensor([[0.001, 0.1]], requires_grad=True)
+    inputs = torch.randn((10, 6), requires_grad=True)
     out = soft(inputs)
     # out = inputs * 2 + 6
     # out.retain_grad()
-    kl = out.backward(torch.ones_like(out))
-    k = inputs.grad
+    delta = torch.randn_like(out)*100
+    kl = out.backward(delta)
+    k = inputs.grad.cpu().numpy()
     # kk = out.grad
     
     own = Softmax()
     ou = own.forward(inputs.detach().numpy(), axis=1)
-    de = np.ones_like(ou)
-    delta = own.backward(de, ou)
-
+    delta = own.backward(delta.numpy(), ou)
+    ret = np.abs(k - delta)
+    rek = ret < 1e-6
+    retkkk = rek.all()
+    
     input = np.random.rand(10, 300)
     delta = np.random.rand(10, 300)
     # gelu = torch.nn.GELU().requires_grad_(True)

@@ -35,18 +35,24 @@ def train_on_policy_agent(env, agent, num_episodes):
                 episode_return = 0
                 transition_dict = {'states': [], 'actions': [], 'next_states': [], 'rewards': [], 'dones': []}
                 state = env.reset()
+                if len(state)!=2*2:
+                    state = state[0]
                 done = False
+                ## 采样一条序列的
                 while not done:
-                    action = agent.take_action(state)
-                    next_state, reward, done, _ = env.step(action)
+                    action = agent.take_action(state)    ##  根据状态采取动作的
+                    ##  环境执行动作，并反馈下一个状态、动作的奖励、是否完成、步长太长的，info
+                    next_state, reward, terminated, truncated, info = env.step(action)
+                    done = terminated | truncated       ## 终止或者步长太长，都会导致已经结束
+                    ## record该序列的 该时刻状态、该时刻动作、下一个状态、动作的奖励、是否完成的
                     transition_dict['states'].append(state)
                     transition_dict['actions'].append(action)
                     transition_dict['next_states'].append(next_state)
                     transition_dict['rewards'].append(reward)
                     transition_dict['dones'].append(done)
-                    state = next_state
-                    episode_return += reward
-                return_list.append(episode_return)
+                    state = next_state    ## 下一个状态赋值到当前状态
+                    episode_return += reward  ##累加奖励的
+                return_list.append(episode_return)  ## 训练策略网络的，用一条序列来训练
                 agent.update(transition_dict)
                 if (i_episode+1) % 10 == 0:
                     pbar.set_postfix({'episode': '%d' % (num_episodes/10 * i + i_episode+1), 'return': '%.3f' % np.mean(return_list[-10:])})
