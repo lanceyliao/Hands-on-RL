@@ -74,6 +74,14 @@ python ./chapter10.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter10.gif" width="90%"/>
 
+## Chapter 11 TRPO算法
+
+<img src="./chapter11CartPole.gif" width="39%"/> <img src="./chapter11Pendulum.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/657548225 动手学强化学习reinforcement learning-chapter-eleven-TRPO algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/657548225)
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
