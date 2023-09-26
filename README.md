@@ -82,6 +82,22 @@ python ./chapter10.py
 
 [https://zhuanlan.zhihu.com/p/657548225 动手学强化学习reinforcement learning-chapter-eleven-TRPO algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/657548225)
 
+## Chapter 12 PPO算法
+
+<img src="./chapter12CartPole.gif" width="39%"/> <img src="./chapter12Pendulum.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658299943 动手学强化学习reinforcement learning-chapter-twelve-PPO algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/658299943)
+
+### Numpy implementation of Chapter 12 PPO算法
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter12.py
+python ./chapter12.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter12CartPole.gif" width="90%"/>
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
