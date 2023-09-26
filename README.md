@@ -98,6 +98,32 @@ python ./numpy_RL_reinforcement_learning/chapter12.py
 python ./chapter12.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter12CartPole.gif" width="90%"/>
+
+## Chapter 13 DDPG算法
+
+<img src="./chapter13.gif" width="60%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658460643 动手学强化学习reinforcement learning-chapter-thirteen-DDPG 算法，阅读的笔记](https://zhuanlan.zhihu.com/p/658460643)
+
+### Numpy implementation of Chapter 13 DDPG算法
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter13.py
+python ./chapter13.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter13.gif" width="90%"/>
+
+## Chapter 1four SAC算法
+
+<img src="./chapter1four.gif" width="39%"/>&&&&&&&<img src="./chapter1fourCartPole.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658560149 动手学强化学习reinforcement learning-chapter-fourteen-SAC algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/658560149)
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
