@@ -86,6 +86,47 @@ def train_off_policy_agent(env, agent, num_episodes, replay_buffer, minimal_size
                 pbar.update(1)
     return return_list
 
+def train_off_policy_agent_withpth(env, agent, num_episodes, replay_buffer, minimal_size, batch_size, epoch, pth, num):
+    return_list = []
+    epoch = epoch
+    allimage = []
+    limit = 1000
+    for i in range(10):
+        with tqdm(total=int(num_episodes/10), desc='Iteration %d' % i) as pbar:
+            for i_episode in range(int(num_episodes/10)):
+                episode_return = 0
+                state = env.reset()
+                if len(state)!=2*2:
+                    state = state[0]
+                done = False
+                ## 采样一条序列的
+                while not done:
+                    if (i_episode + 1) % 10 == 0 and i == epoch - 1 and len(allimage) < limit:
+                        try:
+                            img = env.render()
+                            allimage.append(img)
+                        except:
+                            pass
+                    # cv2.imshow("CartPole-v1", 
+                    action = agent.take_action(state)
+                    next_state, reward, terminated, truncated, info = env.step(action)
+                    next_state = next_state.flatten()
+                    done = terminated | truncated
+                    replay_buffer.add(state, action, reward, next_state, done)
+                    state = next_state
+                    episode_return += reward
+                    if replay_buffer.size() > minimal_size:
+                        b_s, b_a, b_r, b_ns, b_d = replay_buffer.sample(batch_size)
+                        transition_dict = {'states': b_s, 'actions': b_a, 'next_states': b_ns, 'rewards': b_r, 'dones': b_d}
+                        agent.update(transition_dict)
+                return_list.append(episode_return)
+                if (i_episode+1) % 10 == 0:
+                    pbar.set_postfix({'episode': '%d' % (num_episodes/10 * i + i_episode+1), 'return': '%.3f' % np.mean(return_list[-10:])})
+                pbar.update(1)
+    # https://github.com/guicalare/Img2gif/blob/master/Code/Img2Gif.py
+    imageio.mimsave(os.path.join(pth, 'chapter%s.gif'%str(num)), allimage, duration=10)
+    return return_list
+
 
 def compute_advantage(gamma, lmbda, td_delta):
     td_delta = td_delta.detach().numpy()

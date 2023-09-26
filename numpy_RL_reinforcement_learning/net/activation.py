@@ -21,6 +21,23 @@ class ReLU(object):
 
     def update(self, lr = 1e-10):
         pass
+    
+class tanh(object):
+
+    def forward(self, inputs):
+        pos = np.exp(inputs)
+        neg = np.exp(-inputs)
+        self.y = (pos - neg) / (pos + neg)
+        return self.y
+
+    def backward(self, delta):
+        return (1 - np.power(self.y, 2)) * delta
+
+    def setzero(self):
+        pass
+
+    def update(self, lr = 1e-10):
+        pass
 
 class SiLU(object):
     def forward(self, inputs):
