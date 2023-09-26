@@ -102,11 +102,8 @@ def train_off_policy_agent_withpth(env, agent, num_episodes, replay_buffer, mini
                 ## 采样一条序列的
                 while not done:
                     if (i_episode + 1) % 10 == 0 and i == epoch - 1 and len(allimage) < limit:
-                        try:
-                            img = env.render()
-                            allimage.append(img)
-                        except:
-                            pass
+                        img = env.render()
+                        allimage.append(img)
                     # cv2.imshow("CartPole-v1", 
                     action = agent.take_action(state)
                     next_state, reward, terminated, truncated, info = env.step(action)

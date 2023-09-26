@@ -240,7 +240,7 @@ env_name = 'Pendulum-v1'
 env = gym.make(env_name, render_mode="rgb_array")
 random.seed(0)
 np.random.seed(0)
-_ = env.reset(seed=0)
+# _ = env.reset(seed=0)
 replay_buffer = rl_utils.ReplayBuffer(buffer_size)
 state_dim = env.observation_space.shape[0]
 action_dim = env.action_space.shape[0]
@@ -248,7 +248,7 @@ action_bound = env.action_space.high[0]  # 动作最大值
 agent = DDPG(state_dim, hidden_dim, action_dim, action_bound, sigma, actor_lr, critic_lr, tau, gamma)
 
 return_list = rl_utils.train_off_policy_agent_withpth(env, agent, num_episodes, replay_buffer, minimal_size, batch_size, \
-    10, r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning', '13')
+    6, r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning', '13')
 
 episodes_list = list(range(len(return_list)))
 plt.plot(episodes_list, return_list)
