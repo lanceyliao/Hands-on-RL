@@ -124,6 +124,24 @@ python ./chapter13.py
 
 [https://zhuanlan.zhihu.com/p/658560149 动手学强化学习reinforcement learning-chapter-fourteen-SAC algorithm，阅读的笔记](https://zhuanlan.zhihu.com/p/658560149)
 
+## Chapter 15 imitation learning模仿
+
+<img src="./chapter15.gif" width="39%"/> <img src="./chapter15GAIL.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658591567 动手学强化学习reinforcement learning-chapter-fifteen-imitation learning模仿](https://zhuanlan.zhihu.com/p/658591567)
+
+### Numpy implementation of Chapter 15 imitation learning模仿
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter15.py
+python ./chapter15.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter15.gif" width="39%"/> <img src="./numpy_RL_reinforcement_learning/chapter15GAIL.gif" width="39%"/>
+
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
