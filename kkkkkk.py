@@ -8,16 +8,45 @@ import torch.nn.functional as F
 # output = m(input)
 # output
 
+# import os
+# from PIL import Image
+# from pillow_heif import register_heif_opener
+# register_heif_opener()
+# inpath = r'F:\photo'
+# for i in os.listdir(inpath):
+#     pth = os.path.join(inpath, i)
+#     if '.MOV' in pth or '.AAE' in pth:
+#         os.remove(pth)
+
+#     img = Image.open(pth)
+#     img.save(pth.replace(".HEIC", ".png"))
+#     img.save(pth.replace(".HEIC", ".jpg"))
+
+
 import cv2
+import os
 from PIL import Image
 from pillow_heif import register_heif_opener
 register_heif_opener()
-pth = r'J:\backup\工作需要的各种资料\成绩单\IMG_0168.HEIC'
-# pth = r'c:\IMG_0022.HEIC'
-# img = cv2.imread(pth)
-img = Image.open(pth)
-# img = Image.fromarray(img)
-img.save(pth.replace(".HEIC", ".png"))
+inpath = r'F:\photo'
+outputpath = r'F:\video.avi'
+fps = 0.1
+sizes = (6031+1-2000, 3026-2) #w, h
+videowriter = cv2.VideoWriter(outputpath, cv2.VideoWriter_fourcc(*'XVID'), fps, sizes)
+kee = []
+for i in os.listdir(inpath):
+    pth = os.path.join(inpath, i)
+    if '.png' not in pth or r'毕业照' in pth:
+        continue
+    img = Image.open(pth).convert("RGB")
+    img = np.array(img)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    h, w, c = img.shape
+    if w!=6031+1-2000:
+        img = cv2.resize(img, sizes)
+        # continue
+    videowriter.write(img)
+videowriter.release()
 
 # # network = nn.Linear(2, 2, True).requires_grad_(True)
 # # network = nn.Softmax(dim=1).requires_grad_(True)

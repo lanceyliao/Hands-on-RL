@@ -124,7 +124,6 @@ def train_off_policy_agent_withpth(env, agent, num_episodes, replay_buffer, mini
     imageio.mimsave(os.path.join(pth, 'chapter%s.gif'%str(num)), allimage, duration=10)
     return return_list
 
-
 def compute_advantage(gamma, lmbda, td_delta):
     td_delta = td_delta.detach().numpy()
     advantage_list = []
@@ -134,7 +133,6 @@ def compute_advantage(gamma, lmbda, td_delta):
         advantage_list.append(advantage)
     advantage_list.reverse()
     return torch.tensor(advantage_list, dtype=torch.float)
-
 
 def train_on_policy_agent_withpth(env, agent, num_episodes, epoch, pth, num):
     return_list = []

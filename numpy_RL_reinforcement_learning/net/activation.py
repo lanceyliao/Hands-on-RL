@@ -21,6 +21,22 @@ class ReLU(object):
 
     def update(self, lr = 1e-10):
         pass
+
+class sigmoid(object):
+
+    def forward(self, inputs):
+        self.inputs = deepcopy(inputs)
+        self.y = 1 / (1 + np.exp(-inputs))
+        return self.y
+
+    def backward(self, delta):
+        return self.y * (1 - self.y) * delta
+
+    def setzero(self):
+        pass
+
+    def update(self, lr = 1e-10):
+        pass
     
 class tanh(object):
 
