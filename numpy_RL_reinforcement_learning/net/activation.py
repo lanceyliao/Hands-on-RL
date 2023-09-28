@@ -38,6 +38,24 @@ class sigmoid(object):
     def update(self, lr = 1e-10):
         pass
     
+class Swish(object):
+
+    def forward(self, inputs):
+        self.inputs = deepcopy(inputs)
+        self.y1 = np.exp(-inputs)
+        self.y0 = 1 / (1 + self.y1)
+        y = inputs * self.y0
+        return y
+
+    def backward(self, delta):
+        return (self.y0 - self.inputs * (self.y0**2) * self.y1) * delta
+
+    def setzero(self):
+        pass
+
+    def update(self, lr = 1e-10):
+        pass
+    
 class tanh(object):
 
     def forward(self, inputs):

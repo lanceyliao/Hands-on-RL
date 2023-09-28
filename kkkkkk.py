@@ -2,6 +2,7 @@ import torch
 from torch import nn
 import numpy as np
 import torch.nn.functional as F
+from scipy.stats import truncnorm
 
 # m = nn.Softplus()
 # input = torch.randint(100, (100,)).float()
@@ -22,31 +23,61 @@ import torch.nn.functional as F
 #     img.save(pth.replace(".HEIC", ".png"))
 #     img.save(pth.replace(".HEIC", ".jpg"))
 
+# import cv2
 
-import cv2
-import os
-from PIL import Image
-from pillow_heif import register_heif_opener
-register_heif_opener()
-inpath = r'F:\photo'
-outputpath = r'F:\video.avi'
-fps = 0.1
-sizes = (6031+1-2000, 3026-2) #w, h
-videowriter = cv2.VideoWriter(outputpath, cv2.VideoWriter_fourcc(*'XVID'), fps, sizes)
-kee = []
-for i in os.listdir(inpath):
-    pth = os.path.join(inpath, i)
-    if '.png' not in pth or r'毕业照' in pth:
-        continue
-    img = Image.open(pth).convert("RGB")
-    img = np.array(img)
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    h, w, c = img.shape
-    if w!=6031+1-2000:
-        img = cv2.resize(img, sizes)
-        # continue
-    videowriter.write(img)
-videowriter.release()
+# pth = r'C:\Users\10696\Downloads\2023-09-27_202059.png'
+# ave = r'C:\Users\10696\Downloads\2023-09-27_202059.jpg'
+# def warp(height, width, star_points, src_img):
+#     # 目标尺寸
+#     # height = 35
+#     # width = 110
+
+#     pts1 = np.float32([[30, 0], [width - 60, 0], [0, height-30], [width - 100, height - 30]])
+#     pts2 = np.float32([[0, 0], [width, 0], [0, height], [width, height]])
+#     M = cv2.getPerspectiveTransform(pts2, pts1)
+#     dst = cv2.warpPerspective(src_img, M, (width, height), borderValue=(128, 128, 128))
+#     return dst
+
+# img = cv2.imread(pth)
+# h, w, c = img.shape
+# ret = warp(h, w, (36, 30, w - 30, h - 30), img)
+# cv2.imwrite(ave, ret)
+
+# np.tile
+# X = truncnorm(-2, 2, loc=np.zeros_like(6), scale=np.ones_like(6))
+# X.rvs()
+
+# torch.bmm()
+
+train_index = np.vstack([
+                np.random.permutation(6)
+                for _ in range(10)
+            ])
+train_index
+# import cv2
+# import os
+# from PIL import Image
+# from pillow_heif import register_heif_opener
+# register_heif_opener()
+# inpath = r'F:\photo'
+# outputpath = r'F:\video.avi'
+# fps = 0.1
+# sizes = (6031+1-2000, 3026-2) #w, h
+# videowriter = cv2.VideoWriter(outputpath, cv2.VideoWriter_fourcc(*'XVID'), fps, sizes)
+# kee = []
+# for i in os.listdir(inpath):
+#     pth = os.path.join(inpath, i)
+#     if '.png' not in pth or r'毕业照' in pth:
+#         continue
+#     img = Image.open(pth).convert("RGB")
+#     img = np.array(img)
+#     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+#     h, w, c = img.shape
+#     if w!=6031+1-2000:
+#         img = cv2.resize(img, sizes)
+#         # continue
+#     videowriter.write(img)
+# videowriter.release()
 
 # # network = nn.Linear(2, 2, True).requires_grad_(True)
 # # network = nn.Softmax(dim=1).requires_grad_(True)

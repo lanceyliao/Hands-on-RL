@@ -141,6 +141,21 @@ python ./chapter15.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter15.gif" width="39%"/> <img src="./numpy_RL_reinforcement_learning/chapter15GAIL.gif" width="39%"/>
 
+## Chapter sixteen-模型预测控制
+
+<img src="./chapter16.gif" width="60%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658777952? 动手学强化学习reinforcement learning-chapter-sixteen-模型预测控制](https://zhuanlan.zhihu.com/p/658777952?)
+
+## Chapter seventeen-基于模型的策略优化
+
+<img src="./chapterseventeen.gif" width="60%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/658972982? 动手学强化学习reinforcement learning-chapter-seventeen-基于模型的策略优化](https://zhuanlan.zhihu.com/p/658972982?)
 
 -------------------------------------original readme---------------------------------
 
