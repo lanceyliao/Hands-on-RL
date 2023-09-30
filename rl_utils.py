@@ -91,7 +91,7 @@ def train_off_policy_agent_withpth(env, agent, num_episodes, replay_buffer, mini
     epoch = epoch
     allimage = []
     limit = 1000
-    for i in range(10):
+    for i in range(epoch):
         with tqdm(total=int(num_episodes/10), desc='Iteration %d' % i) as pbar:
             for i_episode in range(int(num_episodes/10)):
                 episode_return = 0

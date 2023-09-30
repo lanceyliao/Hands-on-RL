@@ -44,9 +44,6 @@ class PolicyNet():
         self.x00 = self.x6 * self.action_bound
         return self.x00
     
-    
-    
-    
     def backward(self, delta):
         delta = delta * self.action_bound
         delta = self.tanh.backward(delta)

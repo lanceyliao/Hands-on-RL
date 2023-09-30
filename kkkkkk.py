@@ -49,11 +49,17 @@ from scipy.stats import truncnorm
 
 # torch.bmm()
 
-train_index = np.vstack([
-                np.random.permutation(6)
-                for _ in range(10)
-            ])
-train_index
+# train_index = np.vstack([
+#                 np.random.permutation(6)
+#                 for _ in range(10)
+#             ])
+# train_index
+
+import torch
+from torch import nn
+
+# torch.randn(6, 6)
+
 # import cv2
 # import os
 # from PIL import Image

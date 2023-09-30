@@ -157,6 +157,32 @@ python ./chapter15.py
 
 [https://zhuanlan.zhihu.com/p/658972982? 动手学强化学习reinforcement learning-chapter-seventeen-基于模型的策略优化](https://zhuanlan.zhihu.com/p/658972982?)
 
+## Chapter eighteen-离线强化学习
+
+<img src="./chapter18.gif" width="60%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/659029814 动手学强化学习reinforcement learning-chapter-eighteen-离线强化学习](https://zhuanlan.zhihu.com/p/659029814)
+
+
+## Chapter nineteen-目标导向的强化学习
+
+<img src="./chapter19_HER.gif" width="39%"/> <img src="./chapter19NO_HER.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/659106430 动手学强化学习reinforcement learning-chapter-nineteen-目标导向的强化学习](https://zhuanlan.zhihu.com/p/659106430)
+
+### Numpy implementation of Chapter nineteen-目标导向的强化学习
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter19.py
+python ./chapter19.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter19_HER.gif" width="39%"/> <img src="./numpy_RL_reinforcement_learning/chapter19NO_HER.gif" width="39%"/>
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------
