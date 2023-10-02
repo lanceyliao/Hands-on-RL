@@ -183,6 +183,32 @@ python ./chapter19.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter19_HER.gif" width="39%"/> <img src="./numpy_RL_reinforcement_learning/chapter19NO_HER.gif" width="39%"/>
 
+
+## Chapter twenty-多智能体强化学习入门
+
+<img src="./chapter20.gif" width="60%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/659106430 动手学强化学习reinforcement learning-chapter-nineteen-目标导向的强化学习](https://zhuanlan.zhihu.com/p/659106430)
+
+### Numpy implementation of Chapter twenty-多智能体强化学习入门
+
+**run**
+```
+python ./numpy_RL_reinforcement_learning/chapter20.py
+python ./chapter20.py
+```
+<img src="./numpy_RL_reinforcement_learning/chapter20.gif" width="60%"/>
+
+## Chapter twenty-one 多智能体强化学习进阶
+
+<img src="./chapter21__.gif" width="39%"/> <img src="./chapter21.gif" width="39%"/>
+
+### blogs
+
+[https://zhuanlan.zhihu.com/p/659244178 动手学强化学习reinforcement learning-chapter-twenty-one-多智能体强化学习进阶](https://zhuanlan.zhihu.com/p/659244178)
+
 -------------------------------------original readme---------------------------------
 
 -------------------------------------original readme---------------------------------

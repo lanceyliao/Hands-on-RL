@@ -195,6 +195,7 @@ class ReplayBuffer_Trajectory:
             reward = traj.rewards[step_state]            ## 该record的奖励
             done = traj.dones[step_state]                ## 该record是否完成的
             ## use_her是否使用方式 her，概率值小于阀值
+            ## HER 方式不会修改最开始的 traj，只在采样的时候加入到batch集合内
             if use_her and np.random.uniform() <= her_ratio:   ## 给定好 使用 her 方式的概率
                 step_goal = np.random.randint(step_state + 1, traj.length + 1)  ## 从在同一个轨迹并在时间上处在s'之后的某个状态s''，坐标是step_goal
                 ## 也就是目标的(x,y)坐标 g'

@@ -185,10 +185,11 @@ class PPO:
                     else:
                         dt = (-1 / num) * advantage[i][0]
                 dt = dt * np.exp(log_probs[i][0] - old_log_probs[i][0]) * (1 / nowpro[i][0])
-                if actions[i][0] < 1:
-                    now_act_delta[i, 0] = dt
-                else:
-                    now_act_delta[i, 1] = dt
+                now_act_delta[i, int(actions[i][0])] = dt
+                # if actions[i][0] < 1:
+                #     now_act_delta[i, 0] = dt
+                # else:
+                #     now_act_delta[i, 1] = dt
             
             self.actor.setzero()  ## 默认梯度会累积,这里需要显式将梯度置为0
             self.actor.backward(now_act_delta) ##  反向传播求出 actor 的梯度
@@ -221,7 +222,7 @@ action_dim = env.action_space.n
 agent = PPO(state_dim, hidden_dim, action_dim, actor_lr, critic_lr, lmbda,
             epochs, eps, gamma, device)
 
-return_list = rl_utils.train_on_policy_agent_withpth(env, agent, num_episodes, 7, r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning', '12CartPole')
+return_list = rl_utils.train_on_policy_agent_withpth(env, agent, num_episodes, 10, r'C:\Users\10696\Desktop\access\Hands-on-RL\numpy_RL_reinforcement_learning', '12CartPole')
 
 episodes_list = list(range(len(return_list)))
 plt.plot(episodes_list, return_list)
