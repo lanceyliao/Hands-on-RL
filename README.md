@@ -2,6 +2,10 @@
 
 gymnasium==0.29.1
 
+[https://www.zhihu.com/people/zoujiu1](https://www.zhihu.com/people/zoujiu1)
+
+[https://zoujiu.blog.csdn.net/](https://zoujiu.blog.csdn.net/)
+
 ## Chapter 7 DQN Algorithm
 
 <img src="./chapter7.gif" width="90%"/>
