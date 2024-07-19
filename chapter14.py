@@ -193,7 +193,7 @@ class SACContinuous:
 
 # return_list = rl_utils.train_off_policy_agent_withpth(env, agent, num_episodes,
 #                                               replay_buffer, minimal_size,
-#                                               batch_size, 10, r'C:\Users\10696\Desktop\access\Hands-on-RL', '1four')
+#                                               batch_size, 10, r'C:\Users\10696\Desktop\access\Hands-on-RL', '14')
 
 # episodes_list = list(range(len(return_list)))
 # plt.plot(episodes_list, return_list)

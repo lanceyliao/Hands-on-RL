@@ -120,7 +120,7 @@ python ./chapter13.py
 ```
 <img src="./numpy_RL_reinforcement_learning/chapter13.gif" width="90%"/>
 
-## Chapter 1four SAC算法
+## Chapter 14 SAC算法
 
 <img src="./chapter1four.gif" width="39%"/>&&&&&&&<img src="./chapter1fourCartPole.gif" width="39%"/>
 
