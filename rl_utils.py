@@ -6,20 +6,41 @@ import collections
 import random
 import imageio
 
+# class ReplayBuffer:
+#     def __init__(self, capacity):
+#         self.buffer = collections.deque(maxlen=capacity)
+#
+#     def add(self, state, action, reward, next_state, done):
+#         self.buffer.append((state, action, reward, next_state, done))
+#
+#     def sample(self, batch_size):
+#         transitions = random.sample(self.buffer, batch_size)
+#         state, action, reward, next_state, done = zip(*transitions)
+#         return np.array(state), action, reward, np.array(next_state), done
+#
+#     def size(self):
+#         return len(self.buffer)
+
+
 class ReplayBuffer:
-    def __init__(self, capacity):
-        self.buffer = collections.deque(maxlen=capacity) 
+    '''
+    经验回放池：最近的capacity个历史数据的保存、采样
+    '''
 
-    def add(self, state, action, reward, next_state, done): 
-        self.buffer.append((state, action, reward, next_state, done)) 
+    def __init__(self, capacity):  ## 容量的大小
+        self.buffer = collections.deque(maxlen=capacity)  # 队列,先进先出
 
-    def sample(self, batch_size): 
-        transitions = random.sample(self.buffer, batch_size)
-        state, action, reward, next_state, done = zip(*transitions)
-        return np.array(state), action, reward, np.array(next_state), done 
+    def add(self, s, a, r, s_, done):  # 将数据加入buffer
+        self.buffer.append((s, a, r, s_, done))  ## 加入到队列内部，队列中的最后一个元素是最新的一个数据
 
-    def size(self): 
-        return len(self.buffer)
+    def sample(self, batch_size):  # 从buffer中采样数据,数量为batch_size
+        b_P = random.sample(self.buffer, batch_size)  ## 随机采样的呢，拿到采样的历史数据。
+        s, a, r, s_, done = zip(*b_P)  ## 使用zip来转置，也就是不同的自变量在不同的行
+        b_s, b_a, b_r, b_s_, b_d = np.array(s), a, r, np.array(s_), done  ## 状态序列、动作序列、奖励序列、下一个状态序列，是否结束的序列
+        return {'b_s': b_s, 'b_a': b_a, 'b_r': b_r, 'b_s_': b_s_, 'b_d': b_d}
+
+    def size(self):  # 目前buffer中数据的数量
+        return len(self.buffer)  ##  返回历史数据的总长度
 
 def moving_average(a, window_size):
     cumulative_sum = np.cumsum(np.insert(a, 0, 0)) 
