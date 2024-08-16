@@ -33,10 +33,13 @@ class ReplayBuffer:
     def add(self, s, a, r, s_, done):  # 将数据加入buffer
         self.buffer.append((s, a, r, s_, done))  ## 加入到队列内部，队列中的最后一个元素是最新的一个数据
 
-    def sample(self, batch_size):  # 从buffer中采样数据,数量为batch_size
+    def _sample(self, batch_size):
         b_P = random.sample(self.buffer, batch_size)  ## 随机采样的呢，拿到采样的历史数据。
         s, a, r, s_, done = zip(*b_P)  ## 使用zip来转置，也就是不同的自变量在不同的行
-        b_s, b_a, b_r, b_s_, b_d = np.array(s), a, r, np.array(s_), done  ## 状态序列、动作序列、奖励序列、下一个状态序列，是否结束的序列
+        return np.array(s), a, r, np.array(s_), done ## 状态序列、动作序列、奖励序列、下一个状态序列，是否结束的序列
+
+    def sample(self, batch_size):  # 从buffer中采样数据,数量为batch_size
+        b_s, b_a, b_r, b_s_, b_d = self._sample(batch_size)
         return {'b_s': b_s, 'b_a': b_a, 'b_r': b_r, 'b_s_': b_s_, 'b_d': b_d}
 
     def size(self):  # 目前buffer中数据的数量
