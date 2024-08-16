@@ -155,7 +155,7 @@ python ./chapter15.py
 
 ## Chapter seventeen-基于模型的策略优化
 
-<img src="./chapterseventeen.gif" width="60%"/>
+<img src="chapter17.gif" width="60%"/>
 
 ### blogs
 
